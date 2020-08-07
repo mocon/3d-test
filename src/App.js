@@ -1,4 +1,4 @@
-import React, { useRef, Suspense } from 'react'
+import React, { useRef, useState, useEffect, Suspense } from 'react'
 import { OrbitControls } from 'drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { Canvas, useFrame, useLoader } from 'react-three-fiber'
@@ -12,42 +12,61 @@ const isDev = process.env.NODE_ENV === 'development' ? true : false
 function Shoe() {
   const ref = useRef()
   const gltf = useLoader(GLTFLoader, `${isDev ? '' : '/3d-test'}/scene.gltf`)
+  const [isEntered, setIsEntered] = useState(false)
+  const { positionY, rotationY, opacity } = useSpring({
+    positionY: isEntered ? 0 : -5,
+    rotationY: isEntered ? 1.5708 : 1.5708 * 8,
+    opacity: isEntered ? 1 : 0,
+    config: { mass: 6, tension: 200, friction: 60 },
+  })
+
+  useEffect(() => {
+    setIsEntered(true)
+  }, [])
 
   useFrame(() => {
     ref.current.rotation.y += 0.001
   })
 
   return (
-    <primitive
-      ref={ref}
-      object={gltf.scene}
-      position={[0, 0, 0]}
-      rotation-y={1.5708}
-    />
+    <a.mesh position-y={positionY} rotation-y={rotationY} opacity={opacity}>
+      <primitive ref={ref} object={gltf.scene} position={[0, 0, 0]} />
+    </a.mesh>
   )
 }
 
-function Ring(props) {
+function Ring() {
   const ref = useRef()
-  // const size = useControl('Size', {
-  //   type: 'number',
-  //   min: 0.8,
-  //   max: 0.99,
-  // })
 
   return (
-    <a.mesh ref={ref} {...props} position-y={-0.46} rotation-x={-1.5708}>
+    <a.mesh ref={ref} position-y={-0.46} rotation-x={-1.5708}>
       <ringBufferGeometry attach='geometry' args={[0.9, 0.91, 100]} />
       <meshLambertMaterial attach='material' color='white' />
     </a.mesh>
   )
 }
 
-function Pedestal(props) {
+function Pedestal() {
   const ref = useRef()
+  const [isEntered, setIsEntered] = useState(false)
+  const { positionY, opacity } = useSpring({
+    positionY: isEntered ? -1.21 : -20,
+    opacity: isEntered ? 1 : 0,
+    config: { mass: 1, tension: 200, friction: 50 },
+  })
+
+  // const location = useControl('Location', {
+  //   type: 'number',
+  //   min: -10,
+  //   max: 10,
+  // })
+
+  useEffect(() => {
+    setIsEntered(true)
+  }, [])
 
   return (
-    <a.mesh ref={ref} {...props} position-y={-1.21}>
+    <a.mesh ref={ref} position-y={positionY} opacity={opacity}>
       <cylinderBufferGeometry attach='geometry' args={[0.9, 1.2, 1.5, 120]} />
       <meshPhongMaterial
         flatShading={true}
@@ -78,6 +97,12 @@ function Scene() {
 }
 
 function App() {
+  const [isEntered, setIsEntered] = useState(false)
+
+  useEffect(() => {
+    setIsEntered(true)
+  }, [])
+
   return (
     <>
       <Canvas
@@ -89,7 +114,7 @@ function App() {
       </Canvas>
       {/* <Controls /> */}
       <main>
-        <h1>Nike Air Zoom Pegasus 36</h1>
+        <h1 className={isEntered && 'entered'}>Nike Air Zoom Pegasus 36</h1>
       </main>
     </>
   )

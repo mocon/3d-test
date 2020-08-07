@@ -31,3 +31,23 @@ canvas:focus {
   box-shadow: none;
   outline: none;
 }
+
+main {
+  text-align: center;
+  padding-bottom: 10px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+}
+
+h1 {
+  font-weight: normal;
+  opacity: 0;
+  transition: opacity 6s cubic-bezier(0.455, 0.030, 0.515, 0.955);
+}
+
+h1.entered {
+  opacity: 1;
+}
