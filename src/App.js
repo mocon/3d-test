@@ -7,9 +7,11 @@ import { Controls, useControl } from 'react-three-gui'
 
 import './App.css'
 
+const isDev = process.env.NODE_ENV === 'development' ? true : false
+
 function Shoe() {
   const ref = useRef()
-  const gltf = useLoader(GLTFLoader, '/scene.gltf')
+  const gltf = useLoader(GLTFLoader, `${isDev ? '' : '/3d-test'}/scene.gltf`)
 
   useFrame(() => {
     ref.current.rotation.y += 0.001
