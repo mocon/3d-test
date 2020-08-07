@@ -35,8 +35,8 @@ function Ring(props) {
 
   return (
     <a.mesh ref={ref} {...props} position-y={-0.46} rotation-x={-1.5708}>
-      <ringBufferGeometry attach="geometry" args={[0.9, 0.91, 100]} />
-      <meshLambertMaterial attach="material" color="white" />
+      <ringBufferGeometry attach='geometry' args={[0.9, 0.91, 100]} />
+      <meshLambertMaterial attach='material' color='white' />
     </a.mesh>
   )
 }
@@ -46,14 +46,14 @@ function Pedestal(props) {
 
   return (
     <a.mesh ref={ref} {...props} position-y={-1.21}>
-      <cylinderBufferGeometry attach="geometry" args={[0.9, 1.2, 1.5, 120]} />
+      <cylinderBufferGeometry attach='geometry' args={[0.9, 1.2, 1.5, 120]} />
       <meshPhongMaterial
         flatShading={true}
         roughness={0.5}
         metalness={0.8}
         shininess={5}
-        attach="material"
-        color="#050505"
+        attach='material'
+        color='#050505'
       />
     </a.mesh>
   )
